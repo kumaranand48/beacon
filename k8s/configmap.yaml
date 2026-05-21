@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beacon
+  namespace: beacon
+data:
+  PORT: "3001"
+  AWS_REGION: "us-east-1"
+  DYNAMODB_TABLE_PREFIX: "beacon_"
+  ALLOWED_ORIGINS: "https://beacon.example.com"
+  ALLOWED_EMAILS: ""
+  SYNC_INTERVAL_MINUTES: "15"

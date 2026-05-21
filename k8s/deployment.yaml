@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beacon
+  namespace: beacon
+  labels:
+    app: beacon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beacon
+  template:
+    metadata:
+      labels:
+        app: beacon
+    spec:
+      containers:
+        - name: beacon
+          image: your-registry/beacon:latest
+          ports:
+            - containerPort: 3001
+          envFrom:
+            - configMapRef:
+                name: beacon
+            - secretRef:
+                name: beacon
+          volumeMounts:
+            - name: service-account
+              mountPath: /etc/beacon
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: service-account
+          secret:
+            secretName: beacon-service-account
+            optional: true

@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.local
+*.local
+firebase-service-account.json
+*-service-account.json
+.git
+.github
+*.md
